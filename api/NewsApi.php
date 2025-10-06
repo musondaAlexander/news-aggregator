@@ -21,7 +21,7 @@ class NewsAPI
     {
         $url = NEWS_API_BASE_URL;
         $params = [
-            'apiKey' => NEWS_API_KEY,
+            'apiKey' => "67f22648bef641a2bafffb36c62c20e3",
             'pageSize' => 100
         ];
 

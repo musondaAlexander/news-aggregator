@@ -14,7 +14,7 @@ if (session_status() == PHP_SESSION_NONE) {
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'news_aggregator');
+define('DB_NAME', 'news_aggregator');  // Name of the database
 
 // News API Configuration
 define('NEWS_API_KEY', ' '); // Replace with your actual API key
