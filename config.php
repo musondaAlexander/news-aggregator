@@ -17,7 +17,8 @@ define('DB_PASS', '');
 define('DB_NAME', 'news_aggregator');  // Name of the database
 
 // News API Configuration
-define('NEWS_API_KEY', ' '); // Replace with your actual API key
+// 'apiKey' => "67f22648bef641a2bafffb36c62c20e3",
+define('NEWS_API_KEY', '67f22648bef641a2bafffb36c62c20e3'); // Replace with your actual API key
 define('NEWS_API_BASE_URL', 'https://newsapi.org/v2/');
 
 // Application Configuration

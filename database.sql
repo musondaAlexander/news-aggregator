@@ -1,34 +1,45 @@
 -- News Aggregator Database Setup
 -- Run this in phpMyAdmin to create the database structure
 
-CREATE DATABASE news_aggregator_app;
-USE news_aggregator_app;
+CREATE DATABASE IF NOT EXISTS news_aggregator;
+USE news_aggregator;
+
+-- Table for users (authentication)
+CREATE TABLE IF NOT EXISTS users (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255) DEFAULT NULL,
+    role ENUM('admin','editor','user') NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for storing news articles
-CREATE TABLE articles (
+CREATE TABLE IF NOT EXISTS articles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(500) NOT NULL,
-    description TEXT,
+    summary TEXT,
     content TEXT,
     url VARCHAR(1000) NOT NULL UNIQUE,
-    url_to_image VARCHAR(1000),
+    image_url VARCHAR(1000),
     published_at DATETIME,
+    scraped_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     source_name VARCHAR(200),
     source_id VARCHAR(100),
     author VARCHAR(200),
     category VARCHAR(50) DEFAULT 'general',
-    country VARCHAR(10) DEFAULT 'us',
-    language VARCHAR(10) DEFAULT 'en',
+    views INT DEFAULT 0,
+    likes INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_category (category),
     INDEX idx_published (published_at),
-    INDEX idx_source (source_name),
-    INDEX idx_country (country)
-);
+    INDEX idx_source (source_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for storing news sources
-CREATE TABLE sources (
+CREATE TABLE IF NOT EXISTS sources (
     id VARCHAR(100) PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     description TEXT,
@@ -37,10 +48,10 @@ CREATE TABLE sources (
     language VARCHAR(10),
     country VARCHAR(10),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for user preferences (for future enhancement)
-CREATE TABLE user_preferences (
+CREATE TABLE IF NOT EXISTS user_preferences (
     id INT AUTO_INCREMENT PRIMARY KEY,
     session_id VARCHAR(255),
     preferred_categories JSON,
@@ -48,16 +59,16 @@ CREATE TABLE user_preferences (
     preferred_country VARCHAR(10) DEFAULT 'us',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for tracking popular articles
-CREATE TABLE article_views (
+CREATE TABLE IF NOT EXISTS article_views (
     id INT AUTO_INCREMENT PRIMARY KEY,
     article_id INT,
     view_count INT DEFAULT 1,
     last_viewed TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insert some default categories for better organization
 INSERT INTO user_preferences (session_id, preferred_categories, preferred_country) VALUES 
